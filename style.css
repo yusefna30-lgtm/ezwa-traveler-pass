@@ -1,0 +1,94 @@
+body {
+    background-color: #0b0b0b;
+    color: #d4af37;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    padding: 20px;
+    direction: rtl;
+}
+
+.vault-container {
+    max-width: 400px;
+    margin: 0 auto;
+    border: 1px solid #d4af37;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+}
+
+.vault-header {
+    text-align: center;
+    border-bottom: 1px solid #d4af37;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.brand-logo {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.vault-subtitle {
+    font-size: 11px;
+    color: #8c8c8c;
+    margin-top: 5px;
+}
+
+.gps-badge {
+    margin-top: 10px;
+    font-size: 12px;
+    background: #1a1a1a;
+    padding: 5px;
+    border: 1px dashed #d4af37;
+}
+
+.passport-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.stamp-card {
+    background: #141414;
+    border: 1px solid #333;
+    padding: 15px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.stamp-card.unlocked {
+    border-color: #d4af37;
+    background: #1e1b10;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.stamp-card h3 {
+    font-size: 14px;
+    margin: 0 0 5px 0;
+}
+
+.coords {
+    font-size: 10px;
+    color: #8c8c8c;
+}
+
+.status-text {
+    font-size: 10px;
+    margin-top: 5px;
+    display: block;
+    color: #ff4d4d;
+}
+
+.unlocked .status-text {
+    color: #d4af37;
+}
+
+.story-box {
+    margin-top: 20px;
+    border-top: 1px solid #d4af37;
+    padding-top: 15px;
+}
+
+.hidden {
+    display: none;
+}
