@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[ EZWA ] - Digital Traveler Vault</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="vault-container">
+        <!-- الترويصة الأرشيفية -->
+        <header class="vault-header">
+            <span class="brand-logo">[ E Z W A ]</span>
+            <p class="vault-subtitle">ARCHIVE VAULT & PASSPORT</p>
+            <div id="gps-status" class="gps-badge">جاري التحقق من إحداثيات الموقع...</div>
+        </header>
+
+        <!-- شبكة أختام المعالم -->
+        <main class="passport-grid">
+            <div class="stamp-card locked" id="diriyah">
+                <h3>الدرعية</h3>
+                <p class="coords">24°44' N, 46°34' E</p>
+                <span class="status-text">LOCKED</span>
+            </div>
+            <div class="stamp-card locked" id="alula">
+                <h3>العلا</h3>
+                <p class="coords">26°37' N, 37°56' E</p>
+                <span class="status-text">LOCKED</span>
+            </div>
+            <div class="stamp-card locked" id="masmak">
+                <h3>قصر المصمك</h3>
+                <p class="coords">24°38' N, 46°42' E</p>
+                <span class="status-text">LOCKED</span>
+            </div>
+            <div class="stamp-card locked" id="park">
+                <h3>حديقة الملك عبدالعزيز</h3>
+                <p class="coords">إحداثيات الموقع</p>
+                <span class="status-text">LOCKED</span>
+            </div>
+        </main>
+
+        <!-- منطقة السردية التاريخية -->
+        <section id="story-section" class="story-box hidden">
+            <h2>السردية التاريخية للموقع</h2>
+            <p id="story-text">مرحباً بك أيها الرحالة. لقد وصلت بنجاح إلى النقطة المعتمدة في أرشيف البراند.</p>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
