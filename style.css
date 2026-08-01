@@ -78,6 +78,7 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px;
+    margin-bottom: 20px;
 }
 
 .stamp-card {
@@ -113,6 +114,35 @@ body {
 
 .unlocked .status-text {
     color: #d4af37;
+}
+
+.sim-box {
+    border-top: 1px dashed #d4af37;
+    padding-top: 15px;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.sim-title {
+    font-size: 10px;
+    color: #8c8c8c;
+    margin-bottom: 10px;
+}
+
+.sim-buttons button {
+    background: #141414;
+    color: #d4af37;
+    border: 1px solid #d4af37;
+    padding: 5px 10px;
+    font-size: 10px;
+    margin: 3px;
+    cursor: pointer;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.sim-buttons button:hover {
+    background: #d4af37;
+    color: #0b0b0b;
 }
 
 .story-box {
