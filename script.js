@@ -9,15 +9,25 @@ window.addEventListener('DOMContentLoaded', () => {
             const inputField = document.querySelector('input[type="text"]') || document.querySelector('input');
             const submitBtn = document.querySelector('button') || document.querySelector('input[type="submit"]');
             
-            if (inputField && submitBtn) {
+            if (inputField) {
                 inputField.value = serialFromUrl;
                 inputField.dispatchEvent(new Event('input', { bubbles: true }));
                 inputField.dispatchEvent(new Event('change', { bubbles: true }));
-                
-                // إضافة تأخير بسيط جداً لضمان تفاعل الزر وانتقال الصفحة
-                setTimeout(() => {
-                    submitBtn.click();
-                }, 400);
+            }
+            
+            if (submitBtn) {
+                // محاكاة ضغطة حقيقية تماماً كأن المستخدم ضغط بيديّه على الزر
+                const clickEvent = new MouseEvent('click', {
+                    view: window,
+                    bubbles: true,
+                    cancelable: true
+                });
+                submitBtn.dispatchEvent(clickEvent);
+            }
+            
+            // استدعاء مباشر لوظيفة فتح الخزنة إن وجدت في ملفك
+            if (typeof unlockVault === 'function') {
+                unlockVault(serialFromUrl);
             }
         }, 300);
     } else {
