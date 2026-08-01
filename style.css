@@ -42,6 +42,38 @@ body {
     border: 1px dashed #d4af37;
 }
 
+.auth-box {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.auth-instruction {
+    font-size: 12px;
+    color: #cccccc;
+    margin-bottom: 10px;
+}
+
+#serial-input {
+    background: #141414;
+    border: 1px solid #d4af37;
+    color: #d4af37;
+    padding: 8px;
+    width: 80%;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    margin-bottom: 10px;
+}
+
+#verify-btn {
+    background: #d4af37;
+    color: #0b0b0b;
+    border: none;
+    padding: 8px 15px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: 'Courier New', Courier, monospace;
+}
+
 .passport-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
