@@ -1,4 +1,3 @@
-// مصفوفة المعالم مع النبذات التاريخية الموثقة رسمياً
 const landmarks = [
     { 
         id: 'murabba', 
@@ -35,8 +34,8 @@ const landmarks = [
     { 
         id: 'oldtown', 
         name: 'بلدة العلا العتيقة', 
-        lon: 37.9231, 
         lat: 26.6131, 
+        lon: 37.9231, 
         radius: 10.0,
         story: 'بلدة العلا العتيقة: تجمع فريد لمئات المنازل الطينية المتراصة التي كانت ملتقى للقوافل التجارية على طريق الحج التاريخي، وتنبض بعراقة الهندسة العمرانية التقليدية.'
     }
@@ -91,12 +90,11 @@ function checkRealGeoLocation() {
         navigator.geolocation.getCurrentPosition(function(position) {
             processCoordinates(position.coords.latitude, position.coords.longitude);
         }, function(error) {
-            // رفض الموقع أو عدم توفره
+            // في حال عدم توفر إذن الموقع
         });
     }
 }
 
-// محاكاة الموقع لعرض الختم ونبذته التاريخية
 function simulateLocation(lat, lon, landmarkId) {
     processCoordinates(lat, lon);
     let landmark = landmarks.find(l => l.id === landmarkId);
@@ -116,7 +114,6 @@ function processCoordinates(userLat, userLon) {
             let storyBox = document.getElementById("story-section");
             let storyText = document.getElementById("story-text");
             storyBox.classList.remove("hidden");
-            // عرض النبذة التاريخية الموثقة للموقع مباشرة
             storyText.innerText = landmark.story;
         }
     });
