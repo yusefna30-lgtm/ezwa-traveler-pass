@@ -90,19 +90,19 @@ function checkRealGeoLocation() {
         navigator.geolocation.getCurrentPosition(function(position) {
             processCoordinates(position.coords.latitude, position.coords.longitude);
         }, function(error) {
-            // في حال عدم توفر إذن الموقع
+            // خطأ أو رفض إذن الموقع
         });
     }
 }
 
 function simulateLocation(lat, lon, landmarkId) {
-    processCoordinates(lat, lon);
     let landmark = landmarks.find(l => l.id === landmarkId);
+    processCoordinates(lat, lon, landmark);
     let statusBadge = document.getElementById("auth-status");
     statusBadge.innerHTML = `[محاكاة ميدانية] تم تفعيل سجل: ${landmark.name}`;
 }
 
-function processCoordinates(userLat, userLon) {
+function processCoordinates(userLat, userLon, clickedLandmark = null) {
     landmarks.forEach(landmark => {
         let distance = getDistanceFromLatLonInKm(userLat, userLon, landmark.lat, landmark.lon);
         if (distance <= landmark.radius) {
@@ -110,11 +110,37 @@ function processCoordinates(userLat, userLon) {
             card.classList.remove("locked");
             card.classList.add("unlocked");
             card.querySelector(".status-text").innerText = "UNLOCKED";
-            
-            let storyBox = document.getElementById("story-section");
-            let storyText = document.getElementById("story-text");
-            storyBox.classList.remove("hidden");
-            storyText.innerText = landmark.story;
         }
     });
+
+    // عرض قصة الموقع عند الضغط عليه في المحاكاة
+    if (clickedLandmark) {
+        let storyBox = document.getElementById("story-section");
+        let storyText = document.getElementById("story-text");
+        storyBox.classList.remove("hidden");
+        storyText.innerText = clickedLandmark.story;
+    }
+
+    // التحقق مما إذا تم فتح جميع الأختام
+    let allUnlocked = landmarks.every(landmark => {
+        let card = document.getElementById(landmark.id);
+        return card && card.classList.contains('unlocked');
+    });
+
+    // إذا اكتملت جميع الأختام، تظهر المكافأة الكبرى
+    if (allUnlocked) {
+        let storyBox = document.getElementById("story-section");
+        let storyText = document.getElementById("story-text");
+        storyBox.classList.remove("hidden");
+        storyText.innerHTML = `
+            <div style="border-bottom: 1px dashed #c5a059; padding-bottom: 12px; margin-bottom: 12px;">
+                <strong>[ إنجاز استثنائي - نخبة الرحالة ]</strong><br>
+                لقد أتممت بنجاح زيارة كافة معالم الأرشيف التاريخي لـ [ EZWA ]!<br>
+                كهدية تقديرية لكونك من نخبة عملائنا، استخدم كود الخصم الحصري لطلبك القادم:
+            </div>
+            <div style="font-size: 1.3rem; color: #c5a059; font-weight: bold; letter-spacing: 2px;">
+                EZWA-VIP-2026
+            </div>
+        `;
+    }
 }
