@@ -12,17 +12,17 @@
         <header class="vault-header">
             <span class="brand-logo">[ E Z W A ]</span>
             <p class="vault-subtitle">AUTHENTICITY VAULT & PASSPORT</p>
-            <div id="auth-status" class="gps-badge">يرجى إدخال الرقم التسلسلي للقطعة للتفعيل</div>
+            <div id="auth-status" class="gps-badge">أدخل الكود التجريبي: EZWA-001</div>
         </header>
 
-        <!-- قسم التحقق من الرقم التسلسلي (التيشيرت) -->
+        <!-- قسم التحقق من الرقم التسلسلي -->
         <section id="auth-section" class="auth-box">
-            <p class="auth-instruction">أدخل الرقم التسلسلي المطبوع على تكت التيشيرت الداخلي:</p>
-            <input type="text" id="serial-input" placeholder="مثال: EZWA-014">
+            <p class="auth-instruction">أدخل الرقم التسلسلي (تجريبي: EZWA-001):</p>
+            <input type="text" id="serial-input" value="EZWA-001" placeholder="EZWA-001">
             <button id="verify-btn">تحقق وتفعيل القطعة</button>
         </section>
 
-        <!-- شبكة أختام المعالم (تكون مخفية حتى يتم التحقق) -->
+        <!-- شبكة أختام المعالم -->
         <main class="passport-grid hidden" id="passport-grid">
             <div class="stamp-card locked" id="murabba">
                 <h3>قصر المربع</h3>
@@ -50,6 +50,17 @@
                 <span class="status-text">LOCKED</span>
             </div>
         </main>
+
+        <!-- لوحة محاكاة المطورين (للتجربة الميدانية السريعة) -->
+        <section id="sim-section" class="sim-box hidden">
+            <p class="sim-title">--- لوحة محاكاة الموقع (GPS Simulation) ---</p>
+            <div class="sim-buttons">
+                <button onclick="simulateLocation(24.6433, 46.7111, 'قصر المربع التاريخي')">محاكاة قصر المربع</button>
+                <button onclick="simulateLocation(24.6318, 46.7126, 'قصر المصمك')">محاكاة المصمك</button>
+                <button onclick="simulateLocation(24.7350, 46.5744, 'حي الطريف بالدرعية')">محاكاة الدرعية</button>
+                <button onclick="simulateLocation(26.7886, 37.9515, 'موقع الحِجر بالعلا')">محاكاة العلا (الحِجر)</button>
+            </div>
+        </section>
 
         <!-- منطقة السردية التاريخية -->
         <section id="story-section" class="story-box hidden">
