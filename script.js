@@ -5,20 +5,27 @@ window.addEventListener('DOMContentLoaded', () => {
     if (serialFromUrl && serialFromUrl.startsWith('EZWA-')) {
         localStorage.setItem('ezwa_verified_serial', serialFromUrl);
         
-        // تنفيذ التفعيل المباشر وتخطي شاشة التحقق اليدوي
         setTimeout(() => {
-            if (typeof unlockVault === 'function') {
-                unlockVault(serialFromUrl);
-            } else {
-                // البحث عن صندوق التحقق وإخفاؤه مباشرة لفتح الواجهة
-                const verificationBox = document.querySelector('input')?.closest('div');
-                if (verificationBox) {
-                    verificationBox.style.display = 'none';
-                }
-                // إعادة تحميل أو تحديث الحالة إن وجدت دالة بديلة
-                location.reload();
+            const inputField = document.querySelector('input[type="text"]') || document.querySelector('input');
+            const submitBtn = document.querySelector('button') || document.querySelector('input[type="submit"]');
+            const form = document.querySelector('form');
+            
+            if (inputField) {
+                inputField.value = serialFromUrl;
+                inputField.dispatchEvent(new Event('input', { bubbles: true }));
+                inputField.dispatchEvent(new Event('change', { bubbles: true }));
             }
-        }, 100);
+            
+            setTimeout(() => {
+                if (submitBtn) {
+                    submitBtn.click();
+                } else if (form) {
+                    form.submit();
+                } else if (typeof unlockVault === 'function') {
+                    unlockVault(serialFromUrl);
+                }
+            }, 300);
+        }, 300);
     } else {
         const savedSerial = localStorage.getItem('ezwa_verified_serial');
         if (savedSerial && typeof unlockVault === 'function') {
