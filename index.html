@@ -1,5 +1,29 @@
-<!-- شبكة أختام المعالم (الرياض والعلا) -->
-        <main class="passport-grid">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[ EZWA ] - Archive Vault & Passport</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="vault-container">
+        <!-- الترويصة الأرشيفية -->
+        <header class="vault-header">
+            <span class="brand-logo">[ E Z W A ]</span>
+            <p class="vault-subtitle">AUTHENTICITY VAULT & PASSPORT</p>
+            <div id="auth-status" class="gps-badge">يرجى إدخال الرقم التسلسلي للقطعة للتفعيل</div>
+        </header>
+
+        <!-- قسم التحقق من الرقم التسلسلي (التيشيرت) -->
+        <section id="auth-section" class="auth-box">
+            <p class="auth-instruction">أدخل الرقم التسلسلي المطبوع على تكت التيشيرت الداخلي:</p>
+            <input type="text" id="serial-input" placeholder="مثال: EZWA-014">
+            <button id="verify-btn">تحقق وتفعيل القطعة</button>
+        </section>
+
+        <!-- شبكة أختام المعالم (تكون مخفية حتى يتم التحقق) -->
+        <main class="passport-grid hidden" id="passport-grid">
             <div class="stamp-card locked" id="murabba">
                 <h3>قصر المربع</h3>
                 <p class="coords">24°38' N, 46°42' E</p>
@@ -26,3 +50,14 @@
                 <span class="status-text">LOCKED</span>
             </div>
         </main>
+
+        <!-- منطقة السردية التاريخية -->
+        <section id="story-section" class="story-box hidden">
+            <h2>السردية التاريخية للموقع</h2>
+            <p id="story-text">مرحباً بك أيها الرحالة.</p>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
