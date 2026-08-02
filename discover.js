@@ -1,10 +1,43 @@
+let score = 0;
+
+function startGame() {
+
+document.body.innerHTML = `
+
+<div style="max-width:700px;margin:auto;padding:30px;text-align:center;color:white;font-family:Tahoma;">
+
+<h1 style="color:gold;">🏰 قصر المصمك</h1>
+
+<p>قصر المصمك أحد أهم المعالم التاريخية في الرياض.</p>
+
+<img src="masmak.jpg"
+style="width:100%;max-width:500px;border-radius:15px;">
+
+<h2>في أي عام استرد الملك عبدالعزيز مدينة الرياض؟</h2>
+
+<button onclick="checkAnswer('1902')">1902</button>
+
+<br><br>
+
+<button onclick="checkAnswer('1898')">1898</button>
+
+<br><br>
+
+<button onclick="checkAnswer('1912')">1912</button>
+
+</div>
+
+`;
+
+}
+
 function checkAnswer(answer){
 
 if(answer==="1902"){
 
-score += 10;
+score +=10;
 
-document.body.innerHTML = `
+document.body.innerHTML=`
 
 <div style="max-width:700px;margin:auto;padding:30px;text-align:center;color:white;font-family:Tahoma;">
 
@@ -12,7 +45,7 @@ document.body.innerHTML = `
 
 <p>من الذي استرد مدينة الرياض؟</p>
 
-<button onclick="question2('عبدالعزيز')">الملك عبدالعزيز بن عبدالرحمن</button>
+<button onclick="question2('عبدالعزيز')">الملك عبدالعزيز</button>
 
 <br><br>
 
@@ -28,7 +61,7 @@ document.body.innerHTML = `
 
 }else{
 
-alert("❌ إجابة خاطئة");
+alert("إجابة خاطئة");
 
 }
 
@@ -38,9 +71,9 @@ function question2(answer){
 
 if(answer==="عبدالعزيز"){
 
-score +=10;
+score+=10;
 
-document.body.innerHTML = `
+document.body.innerHTML=`
 
 <div style="max-width:700px;margin:auto;padding:30px;text-align:center;color:white;font-family:Tahoma;">
 
@@ -64,19 +97,18 @@ document.body.innerHTML = `
 
 }else{
 
-alert("❌ إجابة خاطئة");
+alert("إجابة خاطئة");
 
 }
 
 }
-
 function question3(answer){
 
 if(answer==="طين"){
 
-score +=10;
+score+=10;
 
-document.body.innerHTML = `
+document.body.innerHTML=`
 
 <div style="max-width:700px;margin:auto;padding:30px;text-align:center;color:white;font-family:Tahoma;">
 
@@ -110,9 +142,9 @@ function question4(answer){
 
 if(answer==="متحف"){
 
-score +=10;
+score+=10;
 
-document.body.innerHTML = `
+document.body.innerHTML=`
 
 <div style="max-width:700px;margin:auto;padding:30px;text-align:center;color:white;font-family:Tahoma;">
 
@@ -146,19 +178,23 @@ function finishStage(answer){
 
 if(answer==="الرياض"){
 
-score +=10;
+score+=10;
 
-document.body.innerHTML = `
+document.body.innerHTML=`
 
-<div style="text-align:center;color:white;padding:40px;font-family:Tahoma;">
+<div style="max-width:700px;margin:auto;padding:40px;text-align:center;color:white;font-family:Tahoma;">
 
-<h1 style="color:lime;">🏆 أكملت مرحلة قصر المصمك</h1>
+<h1 style="color:lime;">🏆 أحسنت!</h1>
 
-<h2>مجموع نقاطك: ${score}</h2>
+<h2>أنهيت مرحلة قصر المصمك</h2>
+
+<h3>مجموع نقاطك: ${score}</h3>
 
 <p>🏰 حصلت على ختم قصر المصمك</p>
 
-<button onclick="nextStage()">الانتقال إلى الدرعية ➜</button>
+<button onclick="alert('المرحلة الثانية: الدرعية قريبًا')">
+الانتقال إلى الدرعية ➜
+</button>
 
 </div>
 
