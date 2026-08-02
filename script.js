@@ -28,9 +28,12 @@ const NARRATIVES = {
 
 let gameState = {
     currentSite: null,
-    stage: 1, // 1 to 5
+    stage: 1,
     grandVaultPoints: 0
 };
+
+// متغيرات مرحلة النقاط (المرحلة 3)
+let connectedNodesCount = 0;
 
 function startVault(siteKey) {
     gameState.currentSite = siteKey;
@@ -67,17 +70,31 @@ function loadStage() {
         container.innerHTML = html;
     } 
     else if (gameState.stage === 3) {
+        connectedNodesCount = 0;
         container.innerHTML = `
             <h3>🕸️ المرحلة 3: توصيل الشبكة الهندسية</h3>
-            <p style="margin: 15px 0;">اضغط على الزر أدناه لربط نقاط المخطط المعماري للمعلم وتفعيل القفل.</p>
-            <button class="btn-gold" style="margin-top:10px; width:100%;" onclick="completeStage()">ربط الشبكة الهندسية بنجاح ⚡</button>
+            <p style="margin: 10px 0; font-size: 13px;">انقر على النقاط الذهبية الخمس بالتتابع لتوصيل مخطط المعلم:</p>
+            <div class="node-canvas" id="node-container">
+                <div class="node-item" id="node-1" onclick="tapNode(1)" style="top:20px; left:50%; transform:translateX(-50%);">1</div>
+                <div class="node-item" id="node-2" onclick="tapNode(2)" style="top:90px; right:30px;">2</div>
+                <div class="node-item" id="node-3" onclick="tapNode(3)" style="bottom:20px; right:60px;">3</div>
+                <div class="node-item" id="node-4" onclick="tapNode(4)" style="bottom:20px; left:60px;">4</div>
+                <div class="node-item" id="node-5" onclick="tapNode(5)" style="top:90px; left:30px;">5</div>
+            </div>
+            <p id="node-status" style="text-align:center; color:var(--gold); font-size:13px; margin-top:10px;">النقاط المتصلة: 0 / 5</p>
         `;
     } 
     else if (gameState.stage === 4) {
         container.innerHTML = `
             <h3>🔓 المرحلة 4: عجلة قفل الخزنة الميكانيكي</h3>
-            <p style="margin: 15px 0;">قم بفك شفرة القفل الميكانيكي الرابع للوصول للختام.</p>
-            <button class="btn-gold" style="margin-top:10px; width:100%;" onclick="completeStage()">فتح القفل الميكانيكي ⚙️</button>
+            <p style="margin: 10px 0; font-size: 13px;">حرك العجلة للوصول إلى الرقم السري الأرشيفي <strong>(19)</strong>:</p>
+            
+            <div class="dial-wrapper">
+                <div class="dial-display" id="dial-number">00</div>
+                <div class="dial-wheel" id="dial-wheel-graphic">⚙️</div>
+                <input type="range" min="0" max="99" value="0" class="dial-slider" id="dial-input" oninput="rotateDial(this.value)">
+            </div>
+            <p id="dial-status" style="text-align:center; color:#aaa; font-size:12px; margin-top:10px;">أدر العجلة حتى يطابق العداد الرقم السري...</p>
         `;
     } 
     else if (gameState.stage === 5) {
@@ -90,6 +107,41 @@ function loadStage() {
             </div>
             <p id="hold-status" style="text-align:center; margin-top:20px; color:var(--gold); font-size:14px;">اضغط الزرين وثبتهما لـ 3 ثوانٍ...</p>
         `;
+    }
+}
+
+// منطق مرحلة 3: توصيل النقاط
+function tapNode(id) {
+    if (id === connectedNodesCount + 1) {
+        connectedNodesCount++;
+        const nodeEl = document.getElementById(`node-${id}`);
+        nodeEl.classList.add('connected');
+        document.getElementById('node-status').innerText = `النقاط المتصلة: ${connectedNodesCount} / 5`;
+        
+        if (connectedNodesCount === 5) {
+            setTimeout(() => {
+                completeStage();
+            }, 400);
+        }
+    }
+}
+
+// منطق مرحلة 4: عجلة الخزنة والعداد
+function rotateDial(val) {
+    const formattedVal = val.toString().padStart(2, '0');
+    document.getElementById('dial-number').innerText = formattedVal;
+    
+    // تدوير عجلة القفل بصرياً
+    const rotationDegree = val * 3.6 * 3;
+    document.getElementById('dial-wheel-graphic').style.transform = `rotate(${rotationDegree}deg)`;
+    
+    // التحقق من الرقم السري (19)
+    if (parseInt(val) === 19) {
+        document.getElementById('dial-status').style.color = "var(--gold)";
+        document.getElementById('dial-status').innerText = "🔓 تم طابق الشفرة! جاري الفتح...";
+        setTimeout(() => {
+            completeStage();
+        }, 600);
     }
 }
 
