@@ -3,40 +3,39 @@ window.addEventListener('DOMContentLoaded', () => {
     const serialFromUrl = urlParams.get('serial');
 
     if (serialFromUrl && serialFromUrl.startsWith('EZWA-')) {
+        // 1. حفظ الرقم في الذاكرة المحلية
         localStorage.setItem('ezwa_verified_serial', serialFromUrl);
 
-        const executeActivation = () => {
-            // 1. تعبئة الرقم التسلسلي في الخانة
-            const inputField = document.querySelector('input');
-            if (inputField) {
-                inputField.value = serialFromUrl;
-                inputField.dispatchEvent(new Event('input', { bubbles: true }));
-                inputField.dispatchEvent(new Event('change', { bubbles: true }));
-            }
+        // 2. تعبئة الحقل بالرقم التسلسلي
+        const inputField = document.querySelector('input');
+        if (inputField) {
+            inputField.value = serialFromUrl;
+        }
 
-            // 2. البحث عن أي عنصر بالصفحة يحتوي نص التفعيل (حتى لو كان div)
-            const allElements = Array.from(document.querySelectorAll('button, div, a, span, input'));
-            const targetElement = allElements.find(el => 
-                el.textContent && el.textContent.includes('تحقق وتفعيل')
-            );
+        // 3. محاولة تشغيل دالة الضغط على الزر إن وجدت
+        const allElements = Array.from(document.querySelectorAll('button, div, a, input'));
+        const btn = allElements.find(el => el.textContent && el.textContent.includes('تحقق وتفعيل'));
+        if (btn) {
+            btn.click();
+        }
 
-            if (targetElement) {
-                // تنفيذ النقرة بجميع الطرق البرمجية الممكنة
-                targetElement.click();
-                if (typeof targetElement.onclick === 'function') {
-                    targetElement.onclick();
-                }
-            } 
+        // 4. إخفاء شاشة التحقق المباشرة من الواجهة برمجياً
+        setTimeout(() => {
+            // البحث عن المربع الذهبي الذي يحتوي على الخانة والزر وإخفائه
+            const authContainer = inputField ? inputField.closest('div[style*="border"], div') : null;
             
-            // 3. استدعاء دالة الفتح المباشرة إن وجدت
+            // إخفاء جميع العناصر التي تحتوي نص "أدخل الكود"
+            document.querySelectorAll('div, section, main').forEach(el => {
+                if (el.innerText && el.innerText.includes('أدخل الكود التجريبي') && el.children.length < 10) {
+                    el.style.display = 'none';
+                }
+            });
+
+            // إظهار واجهة الجواز والأختام (الخزنة)
             if (typeof unlockVault === 'function') {
                 unlockVault(serialFromUrl);
             }
-        };
-
-        // تشغيل المحاولة فوراً وبعد تأخير بسيط لضمان اكتمال تحميل عناصر الواجهة
-        setTimeout(executeActivation, 300);
-        setTimeout(executeActivation, 800);
+        }, 100);
     } else {
         const savedSerial = localStorage.getItem('ezwa_verified_serial');
         if (savedSerial && typeof unlockVault === 'function') {
