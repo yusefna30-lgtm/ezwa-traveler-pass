@@ -1,156 +1,183 @@
+:root {
+    --bg-color: #0b0b0b;
+    --card-bg: #141414;
+    --gold: #d4af37;
+    --gold-light: #f3e5ab;
+    --text-color: #f1f1f1;
+    --border-color: #333;
+}
+
 body {
-    background-color: #0b0b0b;
-    color: #d4af37;
-    font-family: 'Courier New', Courier, monospace;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 20px;
     direction: rtl;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 .vault-container {
-    max-width: 400px;
-    margin: 0 auto;
-    border: 1px solid #d4af37;
-    padding: 20px;
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+    width: 100%;
+    max-width: 480px;
+    background: var(--card-bg);
+    border: 2px solid var(--gold);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
 }
 
-.vault-header {
+.vault-header h1 {
     text-align: center;
-    border-bottom: 1px solid #d4af37;
-    padding-bottom: 15px;
-    margin-bottom: 20px;
-}
-
-.brand-logo {
-    font-size: 24px;
-    font-weight: bold;
+    color: var(--gold);
+    margin-bottom: 5px;
     letter-spacing: 2px;
 }
 
-.vault-subtitle {
-    font-size: 11px;
-    color: #8c8c8c;
-    margin-top: 5px;
-}
-
-.gps-badge {
-    margin-top: 10px;
-    font-size: 12px;
-    background: #1a1a1a;
-    padding: 5px;
-    border: 1px dashed #d4af37;
-}
-
-.auth-box {
+#rank-title {
     text-align: center;
-    margin-bottom: 20px;
+    font-size: 13px;
+    color: #aaa;
 }
 
-.auth-instruction {
-    font-size: 12px;
-    color: #cccccc;
-    margin-bottom: 10px;
+.progress-bar {
+    background: #222;
+    height: 8px;
+    border-radius: 4px;
+    margin: 15px 0;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
 }
 
-#serial-input {
-    background: #141414;
-    border: 1px solid #d4af37;
-    color: #d4af37;
-    padding: 8px;
-    width: 80%;
-    text-align: center;
-    font-family: 'Courier New', Courier, monospace;
-    margin-bottom: 10px;
+#progress-fill {
+    background: var(--gold);
+    height: 100%;
+    width: 0%;
+    transition: width 0.4s ease;
 }
 
-#verify-btn {
-    background: #d4af37;
-    color: #0b0b0b;
+.sites-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.site-btn, .btn-gold {
+    background: linear-gradient(135deg, #d4af37, #aa8c2c);
+    color: #000;
     border: none;
-    padding: 8px 15px;
+    padding: 14px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: 0.2s;
+    text-align: center;
+}
+
+.site-btn:hover, .btn-gold:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--gold);
+    border: 2px solid var(--gold);
+    padding: 12px;
+    border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
-    font-family: 'Courier New', Courier, monospace;
+    width: 100%;
 }
 
-.passport-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-bottom: 20px;
+.modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
 }
 
-.stamp-card {
-    background: #141414;
-    border: 1px solid #333;
-    padding: 15px;
+.modal-content {
+    background: #181818;
+    border: 2px solid var(--gold);
+    padding: 25px;
+    border-radius: 12px;
     text-align: center;
-    transition: all 0.3s ease;
+    width: 85%;
+    max-width: 400px;
 }
 
-.stamp-card.unlocked {
-    border-color: #d4af37;
-    background: #1e1b10;
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
-}
-
-.stamp-card h3 {
-    font-size: 14px;
-    margin: 0 0 5px 0;
-}
-
-.coords {
-    font-size: 10px;
-    color: #8c8c8c;
-}
-
-.status-text {
-    font-size: 10px;
-    margin-top: 5px;
-    display: block;
-    color: #ff4d4d;
-}
-
-.unlocked .status-text {
-    color: #d4af37;
-}
-
-.sim-box {
-    border-top: 1px dashed #d4af37;
-    padding-top: 15px;
-    margin-top: 15px;
-    text-align: center;
-}
-
-.sim-title {
-    font-size: 10px;
-    color: #8c8c8c;
-    margin-bottom: 10px;
-}
-
-.sim-buttons button {
-    background: #141414;
-    color: #d4af37;
-    border: 1px solid #d4af37;
-    padding: 5px 10px;
-    font-size: 10px;
-    margin: 3px;
-    cursor: pointer;
-    font-family: 'Courier New', Courier, monospace;
-}
-
-.sim-buttons button:hover {
-    background: #d4af37;
-    color: #0b0b0b;
-}
-
-.story-box {
+.modal-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     margin-top: 20px;
-    border-top: 1px solid #d4af37;
-    padding-top: 15px;
 }
 
-.hidden {
-    display: none;
+.prize-box {
+    background: #222;
+    border: 1px dashed var(--gold);
+    padding: 15px;
+    margin: 15px 0;
+    color: var(--gold-light);
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.code-box {
+    background: #111;
+    border: 1px solid var(--gold);
+    padding: 12px;
+    margin: 15px 0;
+    color: #fff;
+    font-size: 14px;
+}
+
+.options-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.opt-btn {
+    background: #222;
+    color: #fff;
+    border: 1px solid var(--border-color);
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: right;
+    font-size: 14px;
+}
+
+.opt-btn:hover {
+    border-color: var(--gold);
+}
+
+.dual-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.thumb-btn {
+    background: #222;
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    padding: 20px 15px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    flex: 1;
+    font-size: 13px;
 }
