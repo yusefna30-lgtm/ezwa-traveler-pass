@@ -1,5 +1,5 @@
-// 1. التفعيل التلقائي عند قراءة الرابط
-(function autoVerifyVault() {
+// 1. تفعيل القطعة والدخول التلقائي فقط بدون فتح المواقع
+(function autoVerifySerial() {
     const urlParams = new URLSearchParams(window.location.search);
     const serialFromUrl = urlParams.get('serial');
 
@@ -13,8 +13,6 @@
 
             if (inputField) {
                 inputField.value = serialFromUrl;
-                inputField.dispatchEvent(new Event('input', { bubbles: true }));
-                inputField.dispatchEvent(new Event('change', { bubbles: true }));
             }
 
             if (submitBtn) {
@@ -30,11 +28,11 @@
             }
         }, 100);
 
-        setTimeout(() => clearInterval(checkExist), 4000);
+        setTimeout(() => clearInterval(checkExist), 3000);
     }
 })();
 
-// 2. ربط أزرار المحاكاة بالأختام والسردية التاريخية
+// 2. معالجة فتح الأختام والسردية فقط عند ضغط المستخدم الفعلي على الزر
 document.addEventListener('DOMContentLoaded', () => {
     const narratives = {
         'المصمك': 'حصن المصمك التاريخي: رمز توحيد المملكة وتأسيس الدولة في قلب الرياض عام 1319هـ.',
@@ -44,30 +42,34 @@ document.addEventListener('DOMContentLoaded', () => {
         'العلا': 'بلدة العلا العتيقة: ملتقى القوافل القديم وممر التجار التاريخي عبر الزمن.'
     };
 
+    // الاستماع لضغطات المستخدم الحقيقية فقط
     document.body.addEventListener('click', (e) => {
-        const clickedText = e.target.textContent || '';
-        
+        const buttonText = e.target.textContent ? e.target.textContent.trim() : '';
+
         for (const [key, text] of Object.entries(narratives)) {
-            if (clickedText.includes(key)) {
-                // أولاً: البحث عن البطاقة التي تحتوي اسم الموقع كلمة LOCKED
-                document.querySelectorAll('div').forEach(box => {
-                    if (box.innerText && box.innerText.includes(key) && box.innerText.includes('LOCKED')) {
-                        // استهداف العنصر الذي يحتوي النص LOCKED فقط وتغييره
-                        box.querySelectorAll('*').forEach(child => {
+            // التأكد أن الضغطة كانت على أحد أزرار المحاكاة بالأسفل
+            if (buttonText.includes(key)) {
+                // أ) فتح ختم الموقع المكتوب عليه LOCKED لهذا الموقع فقط
+                document.querySelectorAll('div').forEach(card => {
+                    if (card.innerText && card.innerText.includes(key) && card.innerText.includes('LOCKED')) {
+                        card.querySelectorAll('*').forEach(child => {
                             if (child.children.length === 0 && child.textContent.trim() === 'LOCKED') {
                                 child.textContent = 'UNLOCKED ✓';
                                 child.style.color = '#d4af37';
                                 child.style.fontWeight = 'bold';
                             }
                         });
-                        box.style.borderColor = '#d4af37';
-                        box.style.boxShadow = '0 0 12px rgba(212, 175, 55, 0.4)';
+                        card.style.borderColor = '#d4af37';
+                        card.style.boxShadow = '0 0 12px rgba(212, 175, 55, 0.4)';
                     }
                 });
 
-                // ثانياً: تحديث نص السردية التاريخية
+                // ب) تحديث السردية التاريخية للموقع المضغوط فقط
                 document.querySelectorAll('div, p, span').forEach(el => {
-                    if (el.children.length === 0 && (el.textContent.includes('مرحباً بك أيها الرحالة') || Object.values(narratives).some(n => el.textContent.includes(n.substring(0, 10))))) {
+                    if (el.children.length === 0 && (
+                        el.textContent.includes('مرحباً بك أيها الرحالة') || 
+                        Object.values(narratives).some(n => el.textContent.includes(n.substring(0, 10)))
+                    )) {
                         el.textContent = text;
                         el.style.color = '#d4af37';
                     }
