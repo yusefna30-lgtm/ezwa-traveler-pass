@@ -70,36 +70,6 @@
         </section>
     </div>
 
-    <script src="script.js"></script>
-
-    <!-- التفعيل التلقائي الفوري لروابط NFC -->
-    <script>
-      window.addEventListener('load', () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const serial = urlParams.get('serial');
-
-        if (serial) {
-          const input = document.getElementById('serial-input');
-          const verifyBtn = document.getElementById('verify-btn');
-          const authSection = document.getElementById('auth-section');
-          const passportGrid = document.getElementById('passport-grid');
-          const simSection = document.getElementById('sim-section');
-          const storySection = document.getElementById('story-section');
-          const authStatus = document.getElementById('auth-status');
-
-          if (input) input.value = serial;
-
-          // 1. الضغط البرمجي على الزر لتفعيل دالة script.js
-          if (verifyBtn) verifyBtn.click();
-
-          // 2. إخفاء مربع التحقق وإظهار الجواز والمحاكاة مباشرة على الشاشة
-          if (authSection) authSection.style.display = 'none';
-          if (passportGrid) passportGrid.classList.remove('hidden');
-          if (simSection) simSection.classList.remove('hidden');
-          if (storySection) storySection.classList.remove('hidden');
-          if (authStatus) authStatus.textContent = 'تم التفعيل للقطعة: ' + serial;
-        }
-      });
-    </script>
+    <script src="script.js?v=3"></script>
 </body>
 </html>
