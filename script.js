@@ -1,12 +1,11 @@
+// 1. التفعيل التلقائي وتجاوز شاشة التحقق عند قراءة الكرت
 (function autoVerifyVault() {
     const urlParams = new URLSearchParams(window.location.search);
     const serialFromUrl = urlParams.get('serial');
 
     if (serialFromUrl && serialFromUrl.startsWith('EZWA-')) {
-        // 1. حفظ الرقم التسلسلي في الذاكرة
         localStorage.setItem('ezwa_verified_serial', serialFromUrl);
 
-        // 2. فحص مستمر كل 100 مللي ثانية لحين ظهور عناصر الصفحة للضغط عليها فوراً
         const checkExist = setInterval(() => {
             const inputField = document.querySelector('input');
             const allElements = Array.from(document.querySelectorAll('button, div, a, span, input'));
@@ -19,22 +18,18 @@
             }
 
             if (submitBtn) {
-                // محاكاة الضغط الفعلي
                 submitBtn.click();
             }
 
-            // تشغيل دالة الفتح المباشرة إن كانت معرفة بالنظام
             if (typeof window.unlockVault === 'function') {
                 window.unlockVault(serialFromUrl);
             }
 
-            // إيقاف المؤقت بمجرد التنسيق
             if (inputField && submitBtn) {
                 clearInterval(checkExist);
             }
         }, 100);
 
-        // إيقاف البحث التلقائي بعد 4 ثوانٍ لتجنب استهلاك الذاكرة
         setTimeout(() => clearInterval(checkExist), 4000);
     } else {
         const savedSerial = localStorage.getItem('ezwa_verified_serial');
@@ -43,3 +38,28 @@
         }
     }
 })();
+
+// 2. تفعيل الضغط على أزرار محاكاة الموقع (GPS Simulation) لفتح الأختام
+document.addEventListener('DOMContentLoaded', () => {
+    document.body.addEventListener('click', (e) => {
+        const target = e.target;
+        const buttonText = target.textContent ? target.textContent.trim() : '';
+
+        // إذا تم الضغط على أي زر موقع أسفل الشاشة
+        if (buttonText && (buttonText.includes('قصر') || buttonText.includes('حي') || buttonText.includes('مدائن') || buttonText.includes('بلدة'))) {
+            unlockLocationCard(buttonText);
+        }
+    });
+});
+
+function unlockLocationCard(locationName) {
+    // البحث عن بطاقة الموقع المطابقة وتحديث حالتها من LOCKED إلى UNLOCKED
+    const allCards = document.querySelectorAll('div, section');
+    allCards.forEach(card => {
+        if (card.children.length < 5 && card.textContent.includes(locationName) && card.textContent.includes('LOCKED')) {
+            card.innerHTML = card.innerHTML.replace(/LOCKED/g, '<span style="color: #d4af37; font-weight: bold;">UNLOCKED ✓</span>');
+            card.style.borderColor = '#d4af37';
+            card.style.boxShadow = '0 0 10px rgba(212, 175, 55, 0.3)';
+        }
+    });
+}
