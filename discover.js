@@ -192,8 +192,8 @@ document.body.innerHTML=`
 
 <p>🏰 حصلت على ختم قصر المصمك</p>
 
-<button onclick="alert('المرحلة الثانية: الدرعية قريبًا')">
-الانتقال إلى الدرعية ➜
+<button onclick="nextStage()">
+الانتقال إلى دارة الملك عبدالعزيز ➜
 </button>
 
 </div>
@@ -205,5 +205,45 @@ document.body.innerHTML=`
 alert("❌ إجابة خاطئة");
 
 }
+
+}
+function nextStage(){
+
+document.body.innerHTML = `
+
+<div style="max-width:700px;margin:auto;padding:30px;text-align:center;color:white;font-family:Tahoma;">
+
+<h1 style="color:gold;">📜 دارة الملك عبدالعزيز</h1>
+
+<p>
+دارة الملك عبدالعزيز مؤسسة متخصصة في حفظ تاريخ المملكة ووثائقه.
+</p>
+
+<img src="darah.jpg"
+style="width:100%;max-width:500px;border-radius:15px;">
+
+<h2>
+ما الهدف الرئيسي من دارة الملك عبدالعزيز؟
+</h2>
+
+<button onclick="darah1('صح')">
+حفظ تاريخ المملكة ووثائقه
+</button>
+
+<br><br>
+
+<button onclick="darah1('خطأ')">
+تنظيم البطولات الرياضية
+</button>
+
+<br><br>
+
+<button onclick="darah1('خطأ')">
+إدارة المطارات
+</button>
+
+</div>
+
+`;
 
 }
