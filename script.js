@@ -7,27 +7,27 @@ window.addEventListener('DOMContentLoaded', () => {
         
         setTimeout(() => {
             const inputField = document.querySelector('input');
+            const form = document.querySelector('form');
+            
             if (inputField) {
                 inputField.value = serialFromUrl;
                 inputField.dispatchEvent(new Event('input', { bubbles: true }));
                 inputField.dispatchEvent(new Event('change', { bubbles: true }));
             }
             
-            // البحث عن الزر الذي يحتوي على كلمة تحقق والضغط عليه تلقائياً
-            const buttons = document.querySelectorAll('button, input[type="submit"]');
-            let targetBtn = null;
-            buttons.forEach(btn => {
-                if (btn.textContent.includes('تحقق') || (btn.value && btn.value.includes('تحقق'))) {
-                    targetBtn = btn;
+            // إرسال النموذج (Form Submit) مباشرة لتجاوز حظر المتصفح للضغط البرمجي
+            if (form) {
+                form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+                if (typeof form.submit === 'function') {
+                    // تفادي إعادة تحميل الصفحة إذا كانت SPA، أو تفعيل الإرسال
                 }
-            });
+            }
             
-            if (targetBtn) {
-                targetBtn.click();
-            } else if (typeof unlockVault === 'function') {
+            // التشغيل المباشر لدالة فتح الخزنة إن وجدت في مشروعك
+            if (typeof unlockVault === 'function') {
                 unlockVault(serialFromUrl);
             }
-        }, 500);
+        }, 300);
     } else {
         const savedSerial = localStorage.getItem('ezwa_verified_serial');
         if (savedSerial && typeof unlockVault === 'function') {
