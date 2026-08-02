@@ -3,73 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[ EZWA ] - Archive Vault & Passport</title>
+    <title>جواز عِزوة الأرشيفي | الخزنة التفاعلية</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="vault-container">
-        <!-- الترويصة الأرشيفية -->
+        <!-- Header & Rank -->
         <header class="vault-header">
-            <span class="brand-logo">[ E Z W A ]</span>
-            <p class="vault-subtitle">AUTHENTICITY VAULT & PASSPORT</p>
-            <div id="auth-status" class="gps-badge">أدخل الكود التجريبي: EZWA-001</div>
+            <h1>[ جــواز عِــزوة ]</h1>
+            <p id="rank-title">اختر الموقع لبدء الرحلة الأرشيفية</p>
+            <div class="progress-bar"><div id="progress-fill" style="width: 0%;"></div></div>
         </header>
 
-        <!-- قسم التحقق من الرقم التسلسلي -->
-        <section id="auth-section" class="auth-box">
-            <p class="auth-instruction">أدخل الرقم التسلسلي (تجريبي: EZWA-001):</p>
-            <input type="text" id="serial-input" value="EZWA-001" placeholder="EZWA-001">
-            <button id="verify-btn">تحقق وتفعيل القطعة</button>
-        </section>
+        <!-- Site Selector View -->
+        <div id="site-selector" class="view-section">
+            <h2>اختر المعلم الأرشيفي لبدء اللعبة</h2>
+            <div class="sites-grid">
+                <button class="site-btn" onclick="startVault('masmak')">قصر المصمك</button>
+                <button class="site-btn" onclick="startVault('murabba')">قصر المربع</button>
+                <button class="site-btn" onclick="startVault('diriyah')">حي الطريف</button>
+                <button class="site-btn" onclick="startVault('hegra')">مدائن صالح</button>
+                <button class="site-btn" onclick="startVault('oldtown')">بلدة العلا العتيقة</button>
+            </div>
+        </div>
 
-        <!-- شبكة أختام المعالم -->
-        <main class="passport-grid hidden" id="passport-grid">
-            <div class="stamp-card locked" id="murabba">
-                <h3>قصر المربع</h3>
-                <p class="coords">24°38' N, 46°42' E</p>
-                <span class="status-text">LOCKED</span>
-            </div>
-            <div class="stamp-card locked" id="masmak">
-                <h3>قصر المصمك</h3>
-                <p class="coords">24°38' N, 46°42' E</p>
-                <span class="status-text">LOCKED</span>
-            </div>
-            <div class="stamp-card locked" id="diriyah">
-                <h3>حي الطريف</h3>
-                <p class="coords">24°44' N, 46°34' E</p>
-                <span class="status-text">LOCKED</span>
-            </div>
-            <div class="stamp-card locked" id="hegra">
-                <h3>مدائن صالح (الحِجر)</h3>
-                <p class="coords">26°47' N, 37°57' E</p>
-                <span class="status-text">LOCKED</span>
-            </div>
-            <div class="stamp-card locked" id="oldtown">
-                <h3>بلدة العلا العتيقة</h3>
-                <p class="coords">26°37' N, 37°56' E</p>
-                <span class="status-text">LOCKED</span>
-            </div>
-        </main>
+        <!-- Game Stages View -->
+        <div id="game-stage-view" class="view-section" style="display: none;">
+            <div id="stage-content"></div>
+        </div>
 
-        <!-- لوحة محاكاة الموقع (GPS Simulation) -->
-        <section id="sim-section" class="sim-box hidden">
-            <p class="sim-title">--- لوحة محاكاة الموقع (GPS Simulation) ---</p>
-            <div class="sim-buttons">
-                <button onclick="simulateLocation(24.6433, 46.7111, 'murabba')">قصر المربع</button>
-                <button onclick="simulateLocation(24.6318, 46.7126, 'masmak')">قصر المصمك</button>
-                <button onclick="simulateLocation(24.7350, 46.5744, 'diriyah')">حي الطريف</button>
-                <button onclick="simulateLocation(26.7886, 37.9515, 'hegra')">مدائن صالح</button>
-                <button onclick="simulateLocation(26.6131, 37.9231, 'oldtown')">العلا العتيقة</button>
+        <!-- Reward Choice Modal -->
+        <div id="reward-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h3>🎉 تمت اجتياز المرحلة بنجاح!</h3>
+                <p>اختر مكافأتك للمتابعة:</p>
+                <div class="modal-buttons">
+                    <button class="btn-gold" onclick="claimInstantReward()">🎰 اكشط واربح (جائزة فورية)</button>
+                    <button class="btn-outline" onclick="saveToGrandVault()">🛡️ احتفظ بها للخزنة الكبرى (طقم VIP)</button>
+                </div>
             </div>
-        </section>
+        </div>
 
-        <!-- منطقة السردية التاريخية والنبذة -->
-        <section id="story-section" class="story-box hidden">
-            <h2>السردية التاريخية للموقع</h2>
-            <p id="story-text">مرحباً بك أيها الرحالة.</p>
-        </section>
+        <!-- Scratch Card Modal -->
+        <div id="scratch-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h3>🎟️ بطاقة اكشط واربح</h3>
+                <div id="scratch-prize" class="prize-box">🎁 مبروك! كود خصم فوري: EZWA-15</div>
+                <button class="btn-gold" onclick="closeScratchModal()">متابعة المراحل التالية</button>
+            </div>
+        </div>
+
+        <!-- Grand Victory Modal -->
+        <div id="victory-modal" class="modal" style="display: none;">
+            <div class="modal-content victory-content">
+                <h1>🏆 تم فتح الخزنة الكبرى!</h1>
+                <p>لقد أتممت مراحل الأرشيف الخمس بنجاح، وتأهلت للحصول على <strong>طقم عِزوة VIP المكتمل</strong>!</p>
+                <div class="code-box">شفرة التأهل النهائية: <strong>EZWA-VIP-GOLD-2026</strong></div>
+                <button class="btn-gold" onclick="resetGame()">إعادة بدء الرحلة</button>
+            </div>
+        </div>
     </div>
-
-    <script src="script.js?v=3"></script>
+    <script src="script.js"></script>
 </body>
 </html>
