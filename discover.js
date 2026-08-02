@@ -11,7 +11,7 @@ document.body.innerHTML = `
 قصر المصمك هو أحد أشهر المعالم التاريخية في الرياض.
 </p>
 
-<img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=900"
+<img src="masmak.jpg"
 style="width:100%;max-width:500px;border-radius:15px;">
 
 <h2 style="margin-top:30px;">
