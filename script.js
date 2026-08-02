@@ -1,3 +1,60 @@
+// --- محرك الأصوات التفاعلية (Web Audio API) ---
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+
+function initAudio() {
+    if (!audioCtx) {
+        audioCtx = new AudioContext();
+    }
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+}
+
+// صوت التكّة الميكانيكية (عند الضغط والتدوير)
+function playClickSound() {
+    try {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.04);
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.04);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.04);
+    } catch (e) {
+        // التجاهل في حال عدم دعم المتصفح
+    }
+}
+
+// صوت الفتح والإنجاز الذهبي
+function playUnlockSound() {
+    try {
+        initAudio();
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(440, now); // A4
+        osc.frequency.setValueAtTime(554.37, now + 0.1); // C#5
+        osc.frequency.setValueAtTime(659.25, now + 0.2); // E5
+        osc.frequency.setValueAtTime(880, now + 0.3); // A5
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(now + 0.7);
+    } catch (e) {
+        // التجاهل في حال عدم دعم المتصفح
+    }
+}
+
+// --- البيانات والسرديات الأرشيفية ---
 const NARRATIVES = {
     'masmak': {
         name: 'قصر المصمك',
@@ -32,10 +89,12 @@ let gameState = {
     grandVaultPoints: 0
 };
 
-// متغيرات مرحلة النقاط (المرحلة 3)
 let connectedNodesCount = 0;
+let lastDialValue = 0;
 
 function startVault(siteKey) {
+    initAudio();
+    playClickSound();
     gameState.currentSite = siteKey;
     gameState.stage = 1;
     gameState.grandVaultPoints = 0;
@@ -85,16 +144,19 @@ function loadStage() {
         `;
     } 
     else if (gameState.stage === 4) {
+        lastDialValue = 0;
         container.innerHTML = `
             <h3>🔓 المرحلة 4: عجلة قفل الخزنة الميكانيكي</h3>
-            <p style="margin: 10px 0; font-size: 13px;">حرك العجلة للوصول إلى الرقم السري الأرشيفي <strong>(19)</strong>:</p>
+            <p style="margin: 10px 0; font-size: 13px;">أدر العجلة وتوقف عند الرقم السري الأرشيفي <strong>(19)</strong> ثم افلت المؤشر:</p>
             
             <div class="dial-wrapper">
                 <div class="dial-display" id="dial-number">00</div>
                 <div class="dial-wheel" id="dial-wheel-graphic">⚙️</div>
-                <input type="range" min="0" max="99" value="0" class="dial-slider" id="dial-input" oninput="rotateDial(this.value)">
+                <input type="range" min="0" max="99" value="0" class="dial-slider" id="dial-input" 
+                       oninput="rotateDial(this.value)" 
+                       onchange="checkDial(this.value)">
             </div>
-            <p id="dial-status" style="text-align:center; color:#aaa; font-size:12px; margin-top:10px;">أدر العجلة حتى يطابق العداد الرقم السري...</p>
+            <p id="dial-status" style="text-align:center; color:#aaa; font-size:12px; margin-top:10px;">أدر العجلة ثم اتركه عند الرقم المطلوب...</p>
         `;
     } 
     else if (gameState.stage === 5) {
@@ -110,15 +172,17 @@ function loadStage() {
     }
 }
 
-// منطق مرحلة 3: توصيل النقاط
+// المرحلة 3: توصيل النقاط
 function tapNode(id) {
     if (id === connectedNodesCount + 1) {
+        playClickSound();
         connectedNodesCount++;
         const nodeEl = document.getElementById(`node-${id}`);
         nodeEl.classList.add('connected');
         document.getElementById('node-status').innerText = `النقاط المتصلة: ${connectedNodesCount} / 5`;
         
         if (connectedNodesCount === 5) {
+            playUnlockSound();
             setTimeout(() => {
                 completeStage();
             }, 400);
@@ -126,29 +190,40 @@ function tapNode(id) {
     }
 }
 
-// منطق مرحلة 4: عجلة الخزنة والعداد
+// المرحلة 4: تدوير العجلة (تأثير بصري وصوتي فقط أثناء السحب)
 function rotateDial(val) {
+    if (Math.abs(val - lastDialValue) >= 2) {
+        playClickSound();
+        lastDialValue = val;
+    }
     const formattedVal = val.toString().padStart(2, '0');
     document.getElementById('dial-number').innerText = formattedVal;
     
-    // تدوير عجلة القفل بصرياً
     const rotationDegree = val * 3.6 * 3;
     document.getElementById('dial-wheel-graphic').style.transform = `rotate(${rotationDegree}deg)`;
-    
-    // التحقق من الرقم السري (19)
+}
+
+// المرحلة 4: التحقق عند توقف العميل وإفلات المؤشر
+function checkDial(val) {
     if (parseInt(val) === 19) {
+        playUnlockSound();
         document.getElementById('dial-status').style.color = "var(--gold)";
         document.getElementById('dial-status').innerText = "🔓 تم طابق الشفرة! جاري الفتح...";
         setTimeout(() => {
             completeStage();
         }, 600);
+    } else {
+        document.getElementById('dial-status').style.color = "#ff5555";
+        document.getElementById('dial-status').innerText = "❌ رقم خاطئ، ابحث عن الرقم 19 ثم اترك المؤشر.";
     }
 }
 
 function checkAnswer(selected, correct) {
     if (selected === correct) {
+        playUnlockSound();
         completeStage();
     } else {
+        playClickSound();
         alert('إجابة غير دقيقة، حاول مرة أخرى.');
     }
 }
@@ -158,16 +233,19 @@ function completeStage() {
 }
 
 function claimInstantReward() {
+    playClickSound();
     document.getElementById('reward-modal').style.display = 'none';
     document.getElementById('scratch-modal').style.display = 'flex';
 }
 
 function closeScratchModal() {
+    playClickSound();
     document.getElementById('scratch-modal').style.display = 'none';
     proceedNextStage();
 }
 
 function saveToGrandVault() {
+    playClickSound();
     gameState.grandVaultPoints++;
     document.getElementById('reward-modal').style.display = 'none';
     proceedNextStage();
@@ -176,6 +254,7 @@ function saveToGrandVault() {
 function proceedNextStage() {
     gameState.stage++;
     if (gameState.stage > 5) {
+        playUnlockSound();
         document.getElementById('game-stage-view').style.display = 'none';
         document.getElementById('victory-modal').style.display = 'flex';
     } else {
@@ -185,10 +264,12 @@ function proceedNextStage() {
 
 let holdTimer = null;
 function startHold() {
+    playClickSound();
     const status = document.getElementById('hold-status');
     status.innerText = "جاري تفعيل الطاقة الملكية... استمر بالضغط!";
     if(holdTimer) clearTimeout(holdTimer);
     holdTimer = setTimeout(() => {
+        playUnlockSound();
         status.innerText = "تم اختراق الخزنة بنجاح! 🎉";
         setTimeout(() => {
             document.getElementById('game-stage-view').style.display = 'none';
@@ -198,6 +279,7 @@ function startHold() {
 }
 
 function resetGame() {
+    playClickSound();
     document.getElementById('victory-modal').style.display = 'none';
     document.getElementById('site-selector').style.display = 'block';
 }
