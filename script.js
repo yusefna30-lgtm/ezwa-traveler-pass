@@ -1,45 +1,45 @@
-window.addEventListener('DOMContentLoaded', () => {
+(function autoVerifyVault() {
     const urlParams = new URLSearchParams(window.location.search);
     const serialFromUrl = urlParams.get('serial');
 
     if (serialFromUrl && serialFromUrl.startsWith('EZWA-')) {
-        // 1. حفظ الرقم في الذاكرة المحلية
+        // 1. حفظ الرقم التسلسلي في الذاكرة
         localStorage.setItem('ezwa_verified_serial', serialFromUrl);
 
-        // 2. تعبئة الحقل بالرقم التسلسلي
-        const inputField = document.querySelector('input');
-        if (inputField) {
-            inputField.value = serialFromUrl;
-        }
+        // 2. فحص مستمر كل 100 مللي ثانية لحين ظهور عناصر الصفحة للضغط عليها فوراً
+        const checkExist = setInterval(() => {
+            const inputField = document.querySelector('input');
+            const allElements = Array.from(document.querySelectorAll('button, div, a, span, input'));
+            const submitBtn = allElements.find(el => el.textContent && el.textContent.includes('تحقق وتفعيل'));
 
-        // 3. محاولة تشغيل دالة الضغط على الزر إن وجدت
-        const allElements = Array.from(document.querySelectorAll('button, div, a, input'));
-        const btn = allElements.find(el => el.textContent && el.textContent.includes('تحقق وتفعيل'));
-        if (btn) {
-            btn.click();
-        }
+            if (inputField) {
+                inputField.value = serialFromUrl;
+                inputField.dispatchEvent(new Event('input', { bubbles: true }));
+                inputField.dispatchEvent(new Event('change', { bubbles: true }));
+            }
 
-        // 4. إخفاء شاشة التحقق المباشرة من الواجهة برمجياً
-        setTimeout(() => {
-            // البحث عن المربع الذهبي الذي يحتوي على الخانة والزر وإخفائه
-            const authContainer = inputField ? inputField.closest('div[style*="border"], div') : null;
-            
-            // إخفاء جميع العناصر التي تحتوي نص "أدخل الكود"
-            document.querySelectorAll('div, section, main').forEach(el => {
-                if (el.innerText && el.innerText.includes('أدخل الكود التجريبي') && el.children.length < 10) {
-                    el.style.display = 'none';
-                }
-            });
+            if (submitBtn) {
+                // محاكاة الضغط الفعلي
+                submitBtn.click();
+            }
 
-            // إظهار واجهة الجواز والأختام (الخزنة)
-            if (typeof unlockVault === 'function') {
-                unlockVault(serialFromUrl);
+            // تشغيل دالة الفتح المباشرة إن كانت معرفة بالنظام
+            if (typeof window.unlockVault === 'function') {
+                window.unlockVault(serialFromUrl);
+            }
+
+            // إيقاف المؤقت بمجرد التنسيق
+            if (inputField && submitBtn) {
+                clearInterval(checkExist);
             }
         }, 100);
+
+        // إيقاف البحث التلقائي بعد 4 ثوانٍ لتجنب استهلاك الذاكرة
+        setTimeout(() => clearInterval(checkExist), 4000);
     } else {
         const savedSerial = localStorage.getItem('ezwa_verified_serial');
-        if (savedSerial && typeof unlockVault === 'function') {
-            unlockVault(savedSerial);
+        if (savedSerial && typeof window.unlockVault === 'function') {
+            window.unlockVault(savedSerial);
         }
     }
-});
+})();
