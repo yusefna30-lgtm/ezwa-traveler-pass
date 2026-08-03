@@ -290,27 +290,31 @@ playSuccess();
 vibrate();
 
 document.body.innerHTML = `
-
 <div style="max-width:700px;margin:auto;padding:40px;text-align:center;color:white;font-family:Tahoma;">
+  <h1 style="color:lime;">🎉 تهانينا!</h1>
+  <h2>لقد أنهيت النسخة الأولى من</h2>
+  <h1 style="color:gold;">اكتشف الرياض</h1>
+  <br>
+  <p style="font-size:24px;">
+    🏰 حصلت على ختم قصر المصمك ✅
+  </p>
+  <br>
+  <h2 style="color:#FFD700;">
+    ⭐ مجموع نقاطك: ${score} / 50
+  </h2>
+  <br>
+  <button onclick="completeOwnershipRegistration()" style="background:linear-gradient(135deg, #d4af37, #aa7c11); color:#000; font-weight:900; border:none; padding:15px 25px; font-size:16px; border-radius:8px; cursor:pointer; box-shadow: 0 4px 15px rgba(212,175,55,0.4);">
+    🛡️ توثيق الملكية واستخراج بطاقة الـ VIP
+  </button>
+</div>
+`;
 
-<h1 style="color:lime;">🎉 تهانينا!</h1>
-
-<h2>لقد أنهيت النسخة الأولى من</h2>
-
-<h1 style="color:gold;">اكتشف الرياض</h1>
-
-<br>
-
-<p style="font-size:24px;">
-🏰 حصلت على ختم قصر المصمك ✅
-</p>
-
-<br>
-
-<h2 style="color:#FFD700;">
-⭐ مجموع نقاطك: ${score} / 50
-</h2>
-
+// 🛡️ استدعاء التوثيق تلقائياً بعد ثانية واحدة من فتح شاشة الفوز
+setTimeout(() => {
+  if (typeof completeOwnershipRegistration === 'function') {
+    completeOwnershipRegistration();
+  }
+}, 1000);
 <br>
 
 <p style="font-size:22px;color:gold;">
