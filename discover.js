@@ -543,25 +543,51 @@ function finishDarah(answer){
 
 if(answer==="صح"){
 
-score+=10;
+score +=10;
 playSuccess();
 vibrate();
 
-document.body.innerHTML=`
+document.body.innerHTML = `
 
-<div style="text-align:center;color:white;padding:40px;font-family:Tahoma;">
+<div style="max-width:700px;margin:auto;padding:40px;text-align:center;color:white;font-family:Tahoma;">
 
-<h1 style="color:lime;">🎉 أحسنت</h1>
+<h1 style="color:lime;">🎉 تهانينا!</h1>
 
-<h2>أنهيت مرحلة دارة الملك عبدالعزيز</h2>
+<h2>لقد أنهيت النسخة الأولى من</h2>
 
-<h3>مجموع نقاطك: ${score}</h3>
+<h1 style="color:gold;">اكتشف الرياض</h1>
 
-<p>📜 حصلت على ختم دارة الملك عبدالعزيز</p>
+<br>
 
-<p style="margin-top:30px;color:gold;">
-🚧 ترقب الإصدار القادم...
+<p style="font-size:22px;">
+🏰 ختم قصر المصمك ✅
 </p>
+
+<p style="font-size:22px;">
+📜 ختم دارة الملك عبدالعزيز ✅
+</p>
+
+<br>
+
+<h2 style="color:#FFD700;">
+⭐ مجموع نقاطك: ${score}
+</h2>
+
+<br>
+
+<p style="font-size:22px;color:gold;">
+🚧 الإصدار الثاني قادم قريبًا...
+</p>
+
+<p style="color:#ccc;">
+شكرًا لمشاركتك في أول رحلة من EZWA Traveler Pass
+</p>
+
+<br>
+
+<button onclick="location.reload()">
+🔄 إعادة الرحلة
+</button>
 
 </div>
 
