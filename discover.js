@@ -343,3 +343,30 @@ window.completeOwnershipRegistration = function() {
       '<button onclick="location.reload()" style="margin-top:15px; width:100%; padding:10px; background:transparent; border:1px solid #d4af37; color:#d4af37; border-radius:6px; cursor:pointer;">🔄 إعادة فتح التحدي</button>' +
     '</div>';
 };
+// ====================================================
+// 🚀 دالة بدء التحدي (تشغيل زر ابدأ التحدي)
+// ====================================================
+window.startGame = function() {
+  console.log("🚀 جاري بدء التحدي...");
+
+  // 1. إخفاء الشاشة الترحيبية الأولى
+  var welcomeScreen = document.querySelector('.welcome-screen') || document.getElementById('welcome-screen') || document.querySelector('.landing-page');
+  if (welcomeScreen) {
+    welcomeScreen.style.display = 'none';
+  }
+
+  // 2. إظهار واجهة التحدي والمرحلة الأولى
+  var gameContainer = document.querySelector('.game-container') || document.querySelector('.stage-wrapper') || document.getElementById('game-screen');
+  if (gameContainer) {
+    gameContainer.style.display = 'block';
+  }
+
+  // 3. تشغيل المرحلة الأولى إذا كانت الدوال موجودة
+  if (typeof loadStage === 'function') {
+    loadStage(1);
+  } else if (typeof showStage === 'function') {
+    showStage(1);
+  } else if (typeof renderStage === 'function') {
+    renderStage(1);
+  }
+};
