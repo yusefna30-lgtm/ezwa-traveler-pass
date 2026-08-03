@@ -281,6 +281,63 @@ function finishStage(answer){
 
 if(answer==="الرياض"){
 
+score +=10;
+playSuccess();
+vibrate();
+
+document.body.innerHTML = `
+
+<div style="max-width:700px;margin:auto;padding:40px;text-align:center;color:white;font-family:Tahoma;">
+
+<h1 style="color:lime;">🎉 تهانينا!</h1>
+
+<h2>لقد أنهيت النسخة الأولى من</h2>
+
+<h1 style="color:gold;">اكتشف الرياض</h1>
+
+<br>
+
+<p style="font-size:22px;">
+🏰 حصلت على ختم قصر المصمك ✅
+</p>
+
+<br>
+
+<h2 style="color:#FFD700;">
+⭐ مجموع نقاطك: ${score}
+</h2>
+
+<br>
+
+<p style="font-size:22px;color:gold;">
+🚧 الإصدار الثاني قادم قريبًا...
+</p>
+
+<p style="color:#ccc;">
+شكرًا لمشاركتك في أول رحلة من EZWA Traveler Pass
+</p>
+
+<br>
+
+<button onclick="location.reload()">
+🔄 إعادة الرحلة
+</button>
+
+</div>
+
+`;
+
+}else{
+
+playError();
+vibrate();
+alert("❌ إجابة خاطئة");
+
+}
+
+}
+if(answer==="الرياض"){
+
 score+=10;
 playSuccess();
 vibrate();
@@ -314,8 +371,6 @@ alert("❌ إجابة خاطئة");
 }
 
 }
-
-function nextStage(){
 
 document.body.innerHTML = `
 
