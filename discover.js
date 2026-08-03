@@ -1,3 +1,48 @@
+// صوت الإجابة الصحيحة والخاطئة
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+let audioCtx;
+
+function initAudio() {
+    if (!audioCtx) audioCtx = new AudioContext();
+}
+
+function playSuccess() {
+    initAudio();
+
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(900, audioCtx.currentTime + 0.2);
+
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.25);
+}
+
+function playError() {
+    initAudio();
+
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = "square";
+    osc.frequency.value = 180;
+
+    gain.gain.value = 0.2;
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.2);
+}
 let score = 0;
 
 function startGame() {
@@ -61,8 +106,15 @@ document.body.innerHTML=`
 
 }else{
 
-alert("إجابة خاطئة");
+playError();
+function vibrate() {
+if (navigator.vibrate) {
+    navigator.vibrate(100);
+}
 
+}
+alert("❌ إجابة خاطئة");
+  
 }
 
 }
@@ -71,8 +123,9 @@ function question2(answer){
 
 if(answer==="عبدالعزيز"){
 
-score+=10;
-
+score +=10;
+playSuccess();
+  
 document.body.innerHTML=`
 
 <div style="max-width:700px;margin:auto;padding:30px;text-align:center;color:white;font-family:Tahoma;">
@@ -97,8 +150,12 @@ document.body.innerHTML=`
 
 }else{
 
-alert("إجابة خاطئة");
+playError();
+vibrate();
+alert("❌ إجابة خاطئة");
 
+}
+  
 }
 
 }
@@ -132,8 +189,12 @@ document.body.innerHTML=`
 
 }else{
 
+playError();
+vibrate();
 alert("❌ إجابة خاطئة");
 
+}
+  
 }
 
 }
@@ -168,8 +229,12 @@ document.body.innerHTML=`
 
 }else{
 
+playError();
+vibrate();
 alert("❌ إجابة خاطئة");
 
+}
+  
 }
 
 }
@@ -202,8 +267,12 @@ document.body.innerHTML=`
 
 }else{
 
+playError();
+vibrate();
 alert("❌ إجابة خاطئة");
 
+}
+  
 }
 
 }
@@ -283,8 +352,12 @@ document.body.innerHTML = `
 
 }else{
 
+playError();
+vibrate();
 alert("❌ إجابة خاطئة");
 
+}
+  
 }
 
 }
@@ -325,8 +398,12 @@ document.body.innerHTML = `
 
 }else{
 
+playError();
+vibrate();
 alert("❌ إجابة خاطئة");
 
+}
+  
 }
 
 }
@@ -367,8 +444,12 @@ document.body.innerHTML = `
 
 }else{
 
+playError();
+vibrate();
 alert("❌ إجابة خاطئة");
 
+}
+  
 }
 
 }
@@ -409,8 +490,12 @@ document.body.innerHTML = `
 
 }else{
 
+playError();
+vibrate();
 alert("❌ إجابة خاطئة");
 
+}
+  
 }
 
 }
@@ -443,8 +528,12 @@ document.body.innerHTML = `
 
 }else{
 
+playError();
+vibrate();
 alert("❌ إجابة خاطئة");
 
+}
+  
 }
 
 }
