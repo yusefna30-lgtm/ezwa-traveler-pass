@@ -1,3 +1,14 @@
+// ===== أرقام Traveler Pass =====
+
+const validPasses = [];
+
+for (let i = 1; i <= 100; i++) {
+
+    validPasses.push(
+        `EZWA-MSM-${String(i).padStart(4,"0")}`
+    );
+
+}
 // ===============================
 // EZWA Traveler Pass
 // الإصدار الأول
@@ -328,4 +339,86 @@ alert("❌ إجابة خاطئة");
 
 }
 
+}
+
+// ====================================================
+// 🛡️ نظام توثيق وقفل الملكية المدمج مع validPasses
+// ====================================================
+
+// 1. استخراج الرقم التسلسلي القادم من رابط الـ NFC (مثال: ?sn=EZWA-MSM-0001)
+const urlParams = new URLSearchParams(window.location.search);
+const currentSN = urlParams.get('sn');
+
+// 2. فحص حالة التوثيق فور تحميل الصفحة
+window.addEventListener('DOMContentLoaded', () => {
+  // استخدام الرقم التسلسلي القادم من الرابط أو اختيار أول رقم تسلسلي كافتراضي
+  const activeSerial = currentSN || validPasses[0]; 
+
+  // التأكد من أن الرقم التسلسلي ينتمي للمصفوفة المعتمدة
+  if (!validPasses.includes(activeSerial)) {
+    console.warn('⚠️ هذا الرقم التسلسلي غير مسجل في أرشيف EZWA.');
+    return;
+  }
+
+  // قراءة بيانات التوثيق الخاصة بهذا الرقم تحديداً من ذاكرة النظام
+  const registeredData = localStorage.getItem(`ezwa_owner_${activeSerial}`);
+
+  if (registeredData) {
+    // 🛡️ إذا كانت القطعة موثقة ومسجلة مقدماً باسم المالك: تفتح البطاقة مباشرة
+    renderLockedPass(JSON.parse(registeredData));
+  } else {
+    // 🎮 إذا كانت المرة الأولى: تتيح خوض التحدي لبدء التوثيق
+    console.log(`🚀 تفعيل جديد للقطعة الرقمية: ${activeSerial}`);
+  }
+});
+
+// 🏆 دالة تُستدعى فور الفوز بالمرحلة الخامسة لتسجيل اسم المالك
+function completeOwnershipRegistration() {
+  const activeSerial = currentSN || validPasses[0];
+  
+  if (!validPasses.includes(activeSerial)) return;
+
+  const ownerName = prompt("🎉 ألف مبروك الفوز وإتمام البروتوكول!\nأدخل اسم المالك الرسمي لتوثيق هذه القطعة باسمك حصرياً:") || "بطل الأرشيف الملكي";
+
+  const ownerRecord = {
+    name: ownerName,
+    serial: activeSerial,
+    date: new Date().toLocaleDateString('ar-SA'),
+    timestamp: Date.now()
+  };
+
+  // 🔒 قفل الملكية لهذا الرقم التسلسلي تحديداً
+  localStorage.setItem(`ezwa_owner_${activeSerial}`, JSON.stringify(ownerRecord));
+  
+  // عرض بطاقة الملكية الموثقة
+  renderLockedPass(ownerRecord);
+}
+
+// 💳 عرض وثيقة الملكية الموثقة والمقفلة
+function renderLockedPass(ownerData) {
+  const tracker = document.querySelector('.tracker');
+  if (tracker) tracker.style.display = 'none';
+
+  const stageWrapper = document.querySelector('.stage-wrapper');
+  if (stageWrapper) {
+    stageWrapper.innerHTML = `
+      <div class="vip-card-3d" style="width:100%; text-align:right;">
+        <div style="background:var(--gold-main); color:#000; font-weight:900; font-size:11px; padding:4px 10px; border-radius:4px; display:inline-block; margin-bottom:12px;">
+          🛡️ وثيقة ملكية موثقة ومقفلة
+        </div>
+        <h2 style="color: var(--gold-light); font-size: 18px; margin-bottom: 10px;">بطاقة ملكية قطعة [ المصمك ]</h2>
+        <p style="font-size: 13px; color: #bbb; margin-bottom: 6px;"><strong>المالك المسجل:</strong> ${ownerData.name}</p>
+        <p style="font-size: 13px; color: #bbb; margin-bottom: 6px;"><strong>الرقم التسلسلي:</strong> ${ownerData.serial}</p>
+        <p style="font-size: 13px; color: #bbb; margin-bottom: 18px;"><strong>تاريخ التوثيق:</strong> ${ownerData.date}</p>
+
+        <div style="background: var(--gold-main); color: #000; padding: 12px; font-weight: 900; text-align: center; border-radius: 8px; margin-bottom: 15px;">
+          🎟️ تذكرة VIP الفعالة لحامل القطعة
+        </div>
+
+        <button class="btn-action-gold" style="width:100%; font-size:13px; padding:12px;" onclick="location.reload()">
+          🎮 استعراض التحدي وإعادته
+        </button>
+      </div>
+    `;
+  }
 }
