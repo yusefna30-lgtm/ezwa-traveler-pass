@@ -1,9 +1,17 @@
-// صوت الإجابة الصحيحة والخاطئة
+// ===============================
+// EZWA Traveler Pass
+// الجزء الأول
+// ===============================
+
+// ===== الأصوات =====
 const AudioContext = window.AudioContext || window.webkitAudioContext;
-let audioCtx;
+let audioCtx = null;
+let score = 0;
 
 function initAudio() {
-    if (!audioCtx) audioCtx = new AudioContext();
+    if (!audioCtx) {
+        audioCtx = new AudioContext();
+    }
 }
 
 function playSuccess() {
@@ -43,7 +51,14 @@ function playError() {
     osc.start();
     osc.stop(audioCtx.currentTime + 0.2);
 }
-let score = 0;
+
+function vibrate() {
+    if (navigator.vibrate) {
+        navigator.vibrate(100);
+    }
+}
+
+// ===== بداية اللعبة =====
 
 function startGame() {
 
@@ -53,12 +68,16 @@ document.body.innerHTML = `
 
 <h1 style="color:gold;">🏰 قصر المصمك</h1>
 
-<p>قصر المصمك أحد أهم المعالم التاريخية في الرياض.</p>
+<p>
+قصر المصمك أحد أهم المعالم التاريخية في مدينة الرياض.
+</p>
 
 <img src="masmak.jpg"
 style="width:100%;max-width:500px;border-radius:15px;">
 
-<h2>في أي عام استرد الملك عبدالعزيز مدينة الرياض؟</h2>
+<h2>
+في أي عام استرد الملك عبدالعزيز مدينة الرياض؟
+</h2>
 
 <button onclick="checkAnswer('1902')">1902</button>
 
@@ -81,6 +100,8 @@ function checkAnswer(answer){
 if(answer==="1902"){
 
 score +=10;
+playSuccess();
+vibrate();
 
 document.body.innerHTML=`
 
@@ -90,15 +111,21 @@ document.body.innerHTML=`
 
 <p>من الذي استرد مدينة الرياض؟</p>
 
-<button onclick="question2('عبدالعزيز')">الملك عبدالعزيز</button>
+<button onclick="question2('عبدالعزيز')">
+الملك عبدالعزيز
+</button>
 
 <br><br>
 
-<button onclick="question2('سعود')">الملك سعود</button>
+<button onclick="question2('سعود')">
+الملك سعود
+</button>
 
 <br><br>
 
-<button onclick="question2('فيصل')">الملك فيصل</button>
+<button onclick="question2('فيصل')">
+الملك فيصل
+</button>
 
 </div>
 
@@ -107,14 +134,9 @@ document.body.innerHTML=`
 }else{
 
 playError();
-function vibrate() {
-if (navigator.vibrate) {
-    navigator.vibrate(100);
-}
-
-}
+vibrate();
 alert("❌ إجابة خاطئة");
-  
+
 }
 
 }
@@ -125,8 +147,8 @@ if(answer==="عبدالعزيز"){
 
 score +=10;
 playSuccess();
-  
-document.body.innerHTML=`
+vibrate();
+    document.body.innerHTML=`
 
 <div style="max-width:700px;margin:auto;padding:30px;text-align:center;color:white;font-family:Tahoma;">
 
@@ -134,15 +156,21 @@ document.body.innerHTML=`
 
 <p>مم بُني قصر المصمك؟</p>
 
-<button onclick="question3('طين')">الطين واللبن</button>
+<button onclick="question3('طين')">
+الطين واللبن
+</button>
 
 <br><br>
 
-<button onclick="question3('رخام')">الرخام</button>
+<button onclick="question3('رخام')">
+الرخام
+</button>
 
 <br><br>
 
-<button onclick="question3('حديد')">الحديد</button>
+<button onclick="question3('حديد')">
+الحديد
+</button>
 
 </div>
 
@@ -155,15 +183,16 @@ vibrate();
 alert("❌ إجابة خاطئة");
 
 }
-  
-}
 
 }
+
 function question3(answer){
 
 if(answer==="طين"){
 
 score+=10;
+playSuccess();
+vibrate();
 
 document.body.innerHTML=`
 
@@ -173,15 +202,21 @@ document.body.innerHTML=`
 
 <p>ما الاستخدام الحالي لقصر المصمك؟</p>
 
-<button onclick="question4('متحف')">متحف تاريخي</button>
+<button onclick="question4('متحف')">
+متحف تاريخي
+</button>
 
 <br><br>
 
-<button onclick="question4('قصر')">قصر سكني</button>
+<button onclick="question4('قصر')">
+قصر سكني
+</button>
 
 <br><br>
 
-<button onclick="question4('مول')">مركز تجاري</button>
+<button onclick="question4('مول')">
+مركز تجاري
+</button>
 
 </div>
 
@@ -193,8 +228,6 @@ playError();
 vibrate();
 alert("❌ إجابة خاطئة");
 
-}
-  
 }
 
 }
@@ -204,8 +237,9 @@ function question4(answer){
 if(answer==="متحف"){
 
 score+=10;
-
-document.body.innerHTML=`
+playSuccess();
+vibrate();
+    document.body.innerHTML=`
 
 <div style="max-width:700px;margin:auto;padding:30px;text-align:center;color:white;font-family:Tahoma;">
 
@@ -213,15 +247,21 @@ document.body.innerHTML=`
 
 <p>في أي مدينة يقع قصر المصمك؟</p>
 
-<button onclick="finishStage('الرياض')">الرياض</button>
+<button onclick="finishStage('الرياض')">
+الرياض
+</button>
 
 <br><br>
 
-<button onclick="finishStage('جدة')">جدة</button>
+<button onclick="finishStage('جدة')">
+جدة
+</button>
 
 <br><br>
 
-<button onclick="finishStage('الدمام')">الدمام</button>
+<button onclick="finishStage('الدمام')">
+الدمام
+</button>
 
 </div>
 
@@ -234,8 +274,6 @@ vibrate();
 alert("❌ إجابة خاطئة");
 
 }
-  
-}
 
 }
 
@@ -244,6 +282,8 @@ function finishStage(answer){
 if(answer==="الرياض"){
 
 score+=10;
+playSuccess();
+vibrate();
 
 document.body.innerHTML=`
 
@@ -272,10 +312,9 @@ vibrate();
 alert("❌ إجابة خاطئة");
 
 }
-  
-}
 
 }
+
 function nextStage(){
 
 document.body.innerHTML = `
@@ -320,9 +359,11 @@ function darah1(answer){
 
 if(answer==="صح"){
 
-score +=10;
+score+=10;
+playSuccess();
+vibrate();
 
-document.body.innerHTML = `
+document.body.innerHTML=`
 
 <div style="max-width:700px;margin:auto;padding:30px;text-align:center;color:white;font-family:Tahoma;">
 
@@ -357,8 +398,6 @@ vibrate();
 alert("❌ إجابة خاطئة");
 
 }
-  
-}
 
 }
 
@@ -366,9 +405,11 @@ function darah2(answer){
 
 if(answer==="صح"){
 
-score +=10;
+score+=10;
+playSuccess();
+vibrate();
 
-document.body.innerHTML = `
+document.body.innerHTML=`
 
 <div style="max-width:700px;margin:auto;padding:30px;text-align:center;color:white;font-family:Tahoma;">
 
@@ -403,8 +444,6 @@ vibrate();
 alert("❌ إجابة خاطئة");
 
 }
-  
-}
 
 }
 
@@ -412,9 +451,11 @@ function darah3(answer){
 
 if(answer==="صح"){
 
-score +=10;
+score+=10;
+playSuccess();
+vibrate();
 
-document.body.innerHTML = `
+document.body.innerHTML=`
 
 <div style="max-width:700px;margin:auto;padding:30px;text-align:center;color:white;font-family:Tahoma;">
 
@@ -449,8 +490,6 @@ vibrate();
 alert("❌ إجابة خاطئة");
 
 }
-  
-}
 
 }
 
@@ -458,9 +497,11 @@ function darah4(answer){
 
 if(answer==="صح"){
 
-score +=10;
+score+=10;
+playSuccess();
+vibrate();
 
-document.body.innerHTML = `
+document.body.innerHTML=`
 
 <div style="max-width:700px;margin:auto;padding:30px;text-align:center;color:white;font-family:Tahoma;">
 
@@ -495,8 +536,6 @@ vibrate();
 alert("❌ إجابة خاطئة");
 
 }
-  
-}
 
 }
 
@@ -504,9 +543,11 @@ function finishDarah(answer){
 
 if(answer==="صح"){
 
-score +=10;
+score+=10;
+playSuccess();
+vibrate();
 
-document.body.innerHTML = `
+document.body.innerHTML=`
 
 <div style="text-align:center;color:white;padding:40px;font-family:Tahoma;">
 
@@ -518,9 +559,9 @@ document.body.innerHTML = `
 
 <p>📜 حصلت على ختم دارة الملك عبدالعزيز</p>
 
-<button onclick="alert('المتحف الوطني قريبًا')">
-الانتقال إلى المتحف الوطني ➜
-</button>
+<p style="margin-top:30px;color:gold;">
+🚧 ترقب الإصدار القادم...
+</p>
 
 </div>
 
@@ -532,8 +573,6 @@ playError();
 vibrate();
 alert("❌ إجابة خاطئة");
 
-}
-  
 }
 
 }
