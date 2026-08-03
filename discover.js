@@ -247,3 +247,204 @@ style="width:100%;max-width:500px;border-radius:15px;">
 `;
 
 }
+function darah1(answer){
+
+if(answer==="صح"){
+
+score +=10;
+
+document.body.innerHTML = `
+
+<div style="max-width:700px;margin:auto;padding:30px;text-align:center;color:white;font-family:Tahoma;">
+
+<h1 style="color:gold;">📜 السؤال الثاني</h1>
+
+<p>من الشخصية التي تحمل الدارة اسمها؟</p>
+
+<button onclick="darah2('صح')">
+الملك عبدالعزيز بن عبدالرحمن آل سعود
+</button>
+
+<br><br>
+
+<button onclick="darah2('خطأ')">
+الملك سعود
+</button>
+
+<br><br>
+
+<button onclick="darah2('خطأ')">
+الملك فيصل
+</button>
+
+</div>
+
+`;
+
+}else{
+
+alert("❌ إجابة خاطئة");
+
+}
+
+}
+
+function darah2(answer){
+
+if(answer==="صح"){
+
+score +=10;
+
+document.body.innerHTML = `
+
+<div style="max-width:700px;margin:auto;padding:30px;text-align:center;color:white;font-family:Tahoma;">
+
+<h1 style="color:gold;">📜 السؤال الثالث</h1>
+
+<p>ماذا تضم دارة الملك عبدالعزيز؟</p>
+
+<button onclick="darah3('صح')">
+وثائق ومخطوطات وصور تاريخية
+</button>
+
+<br><br>
+
+<button onclick="darah3('خطأ')">
+ملاعب رياضية
+</button>
+
+<br><br>
+
+<button onclick="darah3('خطأ')">
+مدينة ألعاب
+</button>
+
+</div>
+
+`;
+
+}else{
+
+alert("❌ إجابة خاطئة");
+
+}
+
+}
+
+function darah3(answer){
+
+if(answer==="صح"){
+
+score +=10;
+
+document.body.innerHTML = `
+
+<div style="max-width:700px;margin:auto;padding:30px;text-align:center;color:white;font-family:Tahoma;">
+
+<h1 style="color:gold;">📜 السؤال الرابع</h1>
+
+<p>في أي مدينة تقع دارة الملك عبدالعزيز؟</p>
+
+<button onclick="darah4('صح')">
+الرياض
+</button>
+
+<br><br>
+
+<button onclick="darah4('خطأ')">
+جدة
+</button>
+
+<br><br>
+
+<button onclick="darah4('خطأ')">
+الدمام
+</button>
+
+</div>
+
+`;
+
+}else{
+
+alert("❌ إجابة خاطئة");
+
+}
+
+}
+
+function darah4(answer){
+
+if(answer==="صح"){
+
+score +=10;
+
+document.body.innerHTML = `
+
+<div style="max-width:700px;margin:auto;padding:30px;text-align:center;color:white;font-family:Tahoma;">
+
+<h1 style="color:gold;">📜 السؤال الخامس</h1>
+
+<p>ما الذي يستفيد منه الباحثون في الدارة؟</p>
+
+<button onclick="finishDarah('صح')">
+الأرشيف والوثائق التاريخية
+</button>
+
+<br><br>
+
+<button onclick="finishDarah('خطأ')">
+الألعاب الإلكترونية
+</button>
+
+<br><br>
+
+<button onclick="finishDarah('خطأ')">
+المطاعم
+</button>
+
+</div>
+
+`;
+
+}else{
+
+alert("❌ إجابة خاطئة");
+
+}
+
+}
+
+function finishDarah(answer){
+
+if(answer==="صح"){
+
+score +=10;
+
+document.body.innerHTML = `
+
+<div style="text-align:center;color:white;padding:40px;font-family:Tahoma;">
+
+<h1 style="color:lime;">🎉 أحسنت</h1>
+
+<h2>أنهيت مرحلة دارة الملك عبدالعزيز</h2>
+
+<h3>مجموع نقاطك: ${score}</h3>
+
+<p>📜 حصلت على ختم دارة الملك عبدالعزيز</p>
+
+<button onclick="alert('المتحف الوطني قريبًا')">
+الانتقال إلى المتحف الوطني ➜
+</button>
+
+</div>
+
+`;
+
+}else{
+
+alert("❌ إجابة خاطئة");
+
+}
+
+}
