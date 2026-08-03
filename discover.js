@@ -5,7 +5,7 @@ for (let i = 1; i <= 100; i++) {
 }
 
 // ===============================
-// EZWA Traveler Pass - الإصدار الأول
+// EZWA Traveler Pass - الإصدار السحابي
 // ===============================
 
 // ===== الأصوات والمتغيرات =====
@@ -65,7 +65,7 @@ function vibrate() {
 // 🚀 دالة بدء التحدي (السؤال الأول)
 // ====================================================
 function startGame() {
-  score = 0; // إعادة ضبط النقاط عند البداية
+  score = 0;
 
   document.body.innerHTML = `
     <div style="max-width:700px;margin:auto;padding:30px;text-align:center;color:white;font-family:Tahoma;direction:rtl;">
@@ -79,9 +79,9 @@ function startGame() {
     </div>
   `;
 }
-window.startGame = startGame; // ربطها عالمياً للعمل فوراً من الأزرار الخارجية
+window.startGame = startGame;
 
-// ===== السؤال الأول =====
+// ===== الأسئلة والمراحل =====
 function checkAnswer(answer) {
   if (answer === "1902") {
     score += 10;
@@ -104,7 +104,6 @@ function checkAnswer(answer) {
   }
 }
 
-// ===== السؤال الثاني =====
 function question2(answer) {
   if (answer === "عبدالعزيز") {
     score += 10;
@@ -127,7 +126,6 @@ function question2(answer) {
   }
 }
 
-// ===== السؤال الثالث =====
 function question3(answer) {
   if (answer === "طين") {
     score += 10;
@@ -150,7 +148,6 @@ function question3(answer) {
   }
 }
 
-// ===== السؤال الرابع =====
 function question4(answer) {
   if (answer === "متحف") {
     score += 10;
@@ -173,7 +170,6 @@ function question4(answer) {
   }
 }
 
-// ===== السؤال الخامس ونهاية التحدي =====
 function finishStage(answer) {
   if (answer === "الرياض") {
     score += 10;
@@ -196,7 +192,6 @@ function finishStage(answer) {
       </div>
     `;
 
-    // 🛡️ استدعاء التوثيق تلقائياً بعد ثانية واحدة من فتح شاشة الفوز
     setTimeout(() => {
       if (typeof completeOwnershipRegistration === "function") {
         completeOwnershipRegistration();
@@ -210,37 +205,60 @@ function finishStage(answer) {
 }
 
 // ====================================================
-// 🛡️ نظام توثيق الملكية المحدث (EZWA Auth Protocol)
+// 🛡️ نظام توثيق الملكية السحابي (EZWA Cloud Auth Protocol)
 // ====================================================
-window.completeOwnershipRegistration = function() {
+const DB_URL = "https://ezwa-vault-default-rtdb.firebaseio.com/owners";
+
+window.completeOwnershipRegistration = async function() {
   var params = new URLSearchParams(window.location.search);
   var serial = params.get('sn') || 'EZWA-MSM-0001';
-  
-  var ownerName = prompt("🎉 ألف مبروك الفوز!\nأدخل اسم المالك الرسمي لتوثيق هذه القطعة:") || "بطل الأرشيف الملكي";
-  
-  var ownerRecord = {
-    name: ownerName,
-    serial: serial,
-    date: new Date().toLocaleDateString('ar-SA')
-  };
-  
-  localStorage.setItem('ezwa_owner_' + serial, JSON.stringify(ownerRecord));
-  
-  document.body.innerHTML = `
-    <div style="max-width:500px; margin:40px auto; padding:25px; background:#111; border:2px solid #d4af37; border-radius:15px; text-align:right; color:#fff; font-family:sans-serif; direction:rtl; box-shadow:0 10px 30px rgba(0,0,0,0.8);">
-      <div style="background:#d4af37; color:#000; font-weight:900; font-size:11px; padding:4px 10px; border-radius:4px; display:inline-block; margin-bottom:12px;">
-        🛡️ وثيقة ملكية موثقة ومقفلة
+  var endpoint = `${DB_URL}/${serial}.json`;
+
+  try {
+    // 1. الفحص من السحابة أولاً
+    var response = await fetch(endpoint);
+    var existingRecord = await response.json();
+
+    var ownerRecord;
+
+    if (existingRecord && existingRecord.name) {
+      // القطعة موثقة سابقاً للمالك الأول
+      ownerRecord = existingRecord;
+    } else {
+      // أول عملية توثيق لهذه القطعة
+      var ownerName = prompt("🎉 ألف مبروك الفوز!\nأدخل اسم المالك الرسمي لتوثيق هذه القطعة:") || "بطل الأرشيف الملكي";
+      ownerRecord = {
+        name: ownerName,
+        serial: serial,
+        date: new Date().toLocaleDateString('ar-SA')
+      };
+
+      // حفظ التوثيق في السحابة فوراً
+      await fetch(endpoint, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(ownerRecord)
+      });
+    }
+
+    // حفظ نسخة محلية أيضاً
+    localStorage.setItem('ezwa_owner_' + serial, JSON.stringify(ownerRecord));
+
+    // عرض بطاقة الملكية السحابية المقفلة
+    document.body.innerHTML = `
+      <div style="max-width:500px; margin:40px auto; padding:25px; background:#111; border:2px solid #d4af37; border-radius:15px; text-align:right; color:#fff; font-family:sans-serif; direction:rtl; box-shadow:0 10px 30px rgba(0,0,0,0.8);">
+        <div style="background:#d4af37; color:#000; font-weight:900; font-size:11px; padding:4px 10px; border-radius:4px; display:inline-block; margin-bottom:12px;">🛡️ وثيقة ملكية موثقة ومقفلة سحابياً</div>
+        <h2 style="color: #f3e5ab; font-size: 20px; margin-bottom: 12px;">بطاقة ملكية قطعة [ المصمك ]</h2>
+        <p style="font-size: 14px; color: #ccc; margin-bottom: 8px;"><strong>المالك المسجل:</strong> ${ownerRecord.name}</p>
+        <p style="font-size: 14px; color: #ccc; margin-bottom: 8px;"><strong>الرقم التسلسلي:</strong> ${ownerRecord.serial}</p>
+        <p style="font-size: 14px; color: #ccc; margin-bottom: 20px;"><strong>تاريخ التوثيق:</strong> ${ownerRecord.date}</p>
+        <div style="background: #d4af37; color: #000; padding: 14px; font-weight: 900; text-align: center; border-radius: 8px; font-size: 15px;">🎟️ تذكرة VIP الفعالة لحامل القطعة</div>
+        <button onclick="startGame()" style="margin-top:15px; width:100%; padding:10px; background:transparent; border:1px solid #d4af37; color:#d4af37; border-radius:6px; cursor:pointer;">🔄 إعادة فتح التحدي</button>
       </div>
-      <h2 style="color: #f3e5ab; font-size: 20px; margin-bottom: 12px;">بطاقة ملكية قطعة [ المصمك ]</h2>
-      <p style="font-size: 14px; color: #ccc; margin-bottom: 8px;"><strong>المالك المسجل:</strong> ${ownerRecord.name}</p>
-      <p style="font-size: 14px; color: #ccc; margin-bottom: 8px;"><strong>الرقم التسلسلي:</strong> ${ownerRecord.serial}</p>
-      <p style="font-size: 14px; color: #ccc; margin-bottom: 20px;"><strong>تاريخ التوثيق:</strong> ${ownerRecord.date}</p>
-      <div style="background: #d4af37; color: #000; padding: 14px; font-weight: 900; text-align: center; border-radius: 8px; font-size: 15px;">
-        🎟️ تذكرة VIP الفعالة لحامل القطعة
-      </div>
-      <button onclick="startGame()" style="margin-top:15px; width:100%; padding:10px; background:transparent; border:1px solid #d4af37; color:#d4af37; border-radius:6px; cursor:pointer;">
-        🔄 إعادة فتح التحدي
-      </button>
-    </div>
-  `;
+    `;
+
+  } catch (error) {
+    console.error("خطأ في الاتصال بقاعدة البيانات:", error);
+    alert("حدث خطأ أثناء الاتصال بالخادم، يرجى المحاولة مرة أخرى.");
+  }
 };
