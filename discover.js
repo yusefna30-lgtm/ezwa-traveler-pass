@@ -1,6 +1,6 @@
-// ===== أرقام Traveler Pass =====
+// ===== أرقام Traveler Pass للدفعة الأولى (10 قطع فقط) =====
 const validPasses = [];
-for (let i = 1; i <= 100; i++) {
+for (let i = 1; i <= 10; i++) {
   validPasses.push(`EZWA-MSM-${String(i).padStart(4, "0")}`);
 }
 
